@@ -24,7 +24,7 @@
                     <th style="width: 100px;"></th>
                     <th style="width: 100px;"></th>
                     <th style="width: 100px;"></th>
-                    <th><a href="signup.html"><input type="button" class="btn btn-primary" value="Create an Account"></a></th>
+                    <th><a href="signup.php"><input type="button" class="btn btn-primary" value="Create an Account"></a></th>
                 </table>
             </div>
         </form>
