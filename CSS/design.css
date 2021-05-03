@@ -1,0 +1,21 @@
+#content{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width :200px;
+    height:200px;
+    margin-left:-200px;
+    margin-top:-100px;
+}
+
+#input1{
+    width: 400px;
+}
+
+#content1{
+    margin-left: 150px;
+}
+
+#acolor{
+    color: aliceblue;
+}

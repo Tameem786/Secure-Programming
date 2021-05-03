@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/design.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="JS/scripts.js"></script>
+    <title>ATM</title>
+</head>
+<body background="Resource/ATM.png" style="background-repeat: no-repeat; background-size: cover;">
+    <div id="content">
+        <form name="signup" onsubmit="return validateForm()" method="POST">
+            <div class="form-group">
+                <input class="form-control" id="input1" type="text" name="fullname" title="Enter Full Name" placeholder="Enter Full Name" required>
+            </div>
+            <div class="form-group">
+                <table style="width: 500px;">
+                    <th><input class="form-control" id="input1" type="email" name="emailaddress" title="Enter Email Address" placeholder="Enter Email Address" required></th>
+                    <th><a href="send.php" style="color: aliceblue;">Send OTP</a></th>
+                </table>
+                
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="input1" type="text" name="otp" title="Enter OTP Number" placeholder="Enter OTP Number" required>
+            </div>
+            <div class="form-group">
+                <table>
+                    <th><input type="submit" class="btn btn-primary" value="Sign Up"></th>
+                    <th style="width: 100px;"></th>
+                    <th style="width: 100px;"></th>
+                    <th style="width: 100px;"></th>
+                    <th><a href="index.html"><input type="button" class="btn btn-primary" value="Back"></a></th>
+                </table>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
