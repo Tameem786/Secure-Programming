@@ -29,8 +29,28 @@
                     $body = "Account Number: {$accnum} \n PIN Number: {$pinnum}";
                     $headers = "From: atmmachine098@gmail.com";
                     if (mail($to_email, $subject, $body, $headers)) {
-                        header("Location:mainpage.php");
-                        exit;
+                        $servername = "localhost";
+                        $username = "root";
+                        $password = "";
+                        $dbname = "userdata";
+                        $profilename = $_SESSION["NAME"];
+                        $email = $_SESSION["EMAIL"];
+                        // Create connection
+                        $conn = mysqli_connect($servername, $username, $password, $dbname);
+                        
+                        // Check connection
+                        if (!$conn) {
+                          die("Connection failed: " . mysqli_connect_error());
+                        }
+                        $sql = "INSERT INTO users (Username, Email, AccountNumber, PIN)
+                        VALUES ('$profilename', '$email', '$accnum', '$pinnum')";
+                        if ($conn->query($sql) === TRUE) {
+                            $conn->close();
+                            header("Location:mainpage.php");
+                            exit;
+                        } else {
+                            echo "Error creating database: " . $conn->error;
+                        }
                     } else {
                         echo "Email sending failed...";
                     }

@@ -10,8 +10,40 @@
     <title>ATM</title>
 </head>
 <body background="Resource/ATM.png" style="background-repeat: no-repeat; background-size: cover;">
+    <?php
+        session_start();
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "userdata";
+            // Create connection
+            $conn = mysqli_connect($servername, $username, $password, $dbname);
+            // Check connection
+            if (!$conn) {
+              die("Connection failed: " . mysqli_connect_error());
+            }
+            if(isset($_POST["account"], $_POST["pin"])) 
+            {     
+                $account = $_POST["account"]; 
+                $pin = $_POST["pin"]; 
+
+                $result1 = $conn->query("SELECT AccountNumber, PIN FROM Users WHERE AccountNumber = '".$account."' AND  PIN = '".$pin."'");
+
+                if($result1->num_rows > 0 )
+                { 
+                    //$_SESSION["logged_in"] = true; 
+                    echo "<script>alert('Logged In Successfully!')</script>";
+                }
+                else
+                {
+                    echo "<script>alert('The username or password are incorrect!')</script>";
+                }
+            }
+        } 
+    ?>
     <div id="content">
-        <form name="login" onsubmit="return validateForm()" method="POST">
+        <form name="login" action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?> onsubmit="return validateForm()" method="POST">
             <div class="form-group">
                 <input class="form-control" id="input1" type="text" name="account" title="Enter Account Number" placeholder="Enter Account Number" required>
             </div>

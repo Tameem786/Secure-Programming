@@ -19,6 +19,7 @@
         if($_SERVER["REQUEST_METHOD"] == "POST"){
             $_SESSION["OTP"] = $otp;
             $_SESSION["EMAIL"] = $_POST["emailaddress"];
+            $_SESSION["NAME"] = $_POST["fullname"];
             $to_email = $_POST["emailaddress"];
             $subject = "Simple Email Test via PHP";
             $body = "Hi, This is your {$otp}";
