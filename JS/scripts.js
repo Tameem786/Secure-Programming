@@ -10,3 +10,11 @@ function validateForm(){
         return false;
     }
 }
+
+
+function validateSignUp(){
+    var fullname = document.forms["signup"]["fullname"].value;
+    var email = document.forms["signup"]["emailaddress"].value;
+    
+}
+

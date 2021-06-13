@@ -19,3 +19,14 @@
 #acolor{
     color: aliceblue;
 }
+
+a{
+    text-decoration: none;
+}
+
+
+.center{
+    position: static;
+    margin-top: 400px;
+}
+

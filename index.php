@@ -27,28 +27,30 @@
             {     
                 $account = $_POST["account"]; 
                 $pin = $_POST["pin"]; 
-
                 $result1 = $conn->query("SELECT AccountNumber, PIN FROM Users WHERE AccountNumber = '".$account."' AND  PIN = '".$pin."'");
 
-                if($result1->num_rows > 0 )
+                if($result1->num_rows > 0)
                 { 
                     //$_SESSION["logged_in"] = true; 
                     echo "<script>alert('Logged In Successfully!')</script>";
+                    header("Location:profile.php");
                 }
                 else
-                {
+                {   
                     echo "<script>alert('The username or password are incorrect!')</script>";
+                    //echo "<script>alert('The username or password are incorrect! You have $count attempts left')</script>";
                 }
             }
         } 
     ?>
     <div id="content">
         <form name="login" action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?> onsubmit="return validateForm()" method="POST">
+            <div id="attemp"></div>
             <div class="form-group">
-                <input class="form-control" id="input1" type="text" name="account" title="Enter Account Number" placeholder="Enter Account Number" required>
+                <input class="form-control" id="input1" type="text" name="account" title="Enter Account Number" placeholder="Enter Account Number" pattern="[0-9]{10}" required>
             </div>
             <div class="form-group">
-                <input class="form-control" id="input1" type="password" name="pin" title="Enter PIN Number" placeholder="Enter PIN Number" required>
+                <input class="form-control" id="input1" type="password" name="pin" title="Enter PIN Number" placeholder="Enter PIN Number" pattern="[0-9]{8}" required>
             </div>
             <div class="form-group">
                 <table>

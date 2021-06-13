@@ -36,7 +36,7 @@
     <div id="content">
         <form name="signup" action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?> onsubmit="return validateForm()" method="POST">
             <div class="form-group">
-                <input class="form-control" id="input1" type="text" name="fullname" title="Enter Full Name" placeholder="Enter Full Name" required>
+                <input class="form-control" id="input1" type="text" name="fullname" title="Enter Full Name" placeholder="Enter Full Name" maxlength="20" pattern="[aA-zZ]{6,}" required>
             </div>
             <div class="form-group">
                 <input class="form-control" id="input1" type="email" name="emailaddress" title="Enter Email Address" placeholder="Enter Email Address" required>  
@@ -45,6 +45,7 @@
                 <input type="submit" value="Send OTP" class="btn btn-info">
             </div>
         </form>
+        <a href="index.php" id="acolor">Back</a>
     </div>
 </body>
 </html>
