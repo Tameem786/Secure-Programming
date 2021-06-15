@@ -1,3 +1,10 @@
+<?php 
+    session_start();
+    if(!password_verify($_SESSION["account"], $_SESSION["session_id"])){
+        header("Location:index.php");  
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +36,7 @@
             </nav>
         </div>
         <div>
-            <iframe name="profileinfo" width="600px" height="300px"></iframe>
+            <iframe name="profileinfo" width="600px" height="300px" style="background-color:white;"></iframe>
         </div>
     </center>
 </body>

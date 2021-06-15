@@ -11,6 +11,19 @@ function validateForm(){
     }
 }
 
+// function ValidateSignUpForm(){
+//     var fullname = document.forms["signup"]["fullname"].value;
+//     var email = document.forms["signup"]["emailaddress"].value;
+//     if(fullname.length > 20){
+//         alert('Enter valid Account Number');
+//         return false;
+//     }
+//     if(pinNumber.length != 8){
+//         alert('Enter valid PIN number');
+//         return false;
+//     }
+// }
+
 
 function validateSignUp(){
     var fullname = document.forms["signup"]["fullname"].value;

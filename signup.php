@@ -29,14 +29,14 @@
                 header("Location:otp.php");
                 exit;
             } else {
-                echo "Email sending failed...";
+                echo "<script>alert('Email sending failed...')</script>";
             }
         }
     ?>
     <div id="content">
-        <form name="signup" action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?> onsubmit="return validateForm()" method="POST">
+        <form name="signup" method="POST" action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>>
             <div class="form-group">
-                <input class="form-control" id="input1" type="text" name="fullname" title="Enter Full Name" placeholder="Enter Full Name" maxlength="20" pattern="[aA-zZ]{6,}" required>
+                <input class="form-control" id="input1" type="text" name="fullname" title="Enter Full Name" placeholder="Enter Full Name" maxlength="20" pattern="[a A-z Z]{6,}" required>
             </div>
             <div class="form-group">
                 <input class="form-control" id="input1" type="email" name="emailaddress" title="Enter Email Address" placeholder="Enter Email Address" required>  

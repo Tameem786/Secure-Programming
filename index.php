@@ -30,8 +30,10 @@
                 $result1 = $conn->query("SELECT AccountNumber, PIN FROM Users WHERE AccountNumber = '".$account."' AND  PIN = '".$pin."'");
 
                 if($result1->num_rows > 0)
-                { 
-                    //$_SESSION["logged_in"] = true; 
+                {
+                    session_start();
+                    $_SESSION["session_id"] = password_hash($account, PASSWORD_BCRYPT); 
+                    $_SESSION["account"] = $account;
                     echo "<script>alert('Logged In Successfully!')</script>";
                     header("Location:profile.php");
                 }
