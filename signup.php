@@ -11,26 +11,42 @@
 </head>
 <body background="Resource/ATM.png" style="background-repeat: no-repeat; background-size: cover;">
     <?php
-        session_start();
-        $otp = "";
-        for($x=0; $x<6; $x++){
-            $otp .= strval(mt_rand(1,9));
-        }
         if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $_SESSION["OTP"] = $otp;
-            $_SESSION["EMAIL"] = $_POST["emailaddress"];
-            $_SESSION["NAME"] = $_POST["fullname"];
-            $to_email = $_POST["emailaddress"];
-            $subject = "Simple Email Test via PHP";
-            $body = "Hi, This is your {$otp}";
-            $headers = "From: atmmachine098@gmail.com";
-            if (mail($to_email, $subject, $body, $headers)) {
-                //echo "Email successfully sent to $to_email...";
-                header("Location:otp.php");
-                exit;
-            } else {
-                echo "<script>alert('Email sending failed...')</script>";
-            }
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "userdata";
+            // Create connection
+            $conn = mysqli_connect($servername, $username, $password, $dbname);
+            // Check connection
+            if (!$conn) {
+              die("Connection failed: " . mysqli_connect_error());
+            }else{
+                $result1 = $conn->query("SELECT Username FROM Users WHERE Email = '".$_POST["emailaddress"]."'");
+                if($result1->num_rows > 0){
+                    echo "<script>alert('Email address exists')</script>";
+                }else{
+                    session_start();
+                    $otp = "";
+                    for($x=0; $x<6; $x++){
+                        $otp .= strval(mt_rand(1,9));
+                    }
+                    $_SESSION["OTP"] = $otp;
+                    $_SESSION["EMAIL"] = $_POST["emailaddress"];
+                    $_SESSION["NAME"] = $_POST["fullname"];
+                    $to_email = $_POST["emailaddress"];
+                    $subject = "Simple Email Test via PHP";
+                    $body = "Hi, This is your {$otp}";
+                    $headers = "From: atmmachine098@gmail.com";
+                    if (mail($to_email, $subject, $body, $headers)) {
+                        //echo "Email successfully sent to $to_email...";
+                        header("Location:otp.php");
+                        exit;
+                    } else {
+                        echo "<script>alert('Email sending failed...')</script>";
+                    }
+                }
+            }     
         }
     ?>
     <div id="content">

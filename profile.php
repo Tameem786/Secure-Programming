@@ -30,7 +30,7 @@
                         <a class="nav-link" href="withdraw.php" target="profileinfo">Withdraw Money</a>
                     </li>
                     <li class="nav-item navbar-right">
-                        <a class="nav-link" href="logout.php" target="profileinfo">Logout</a>
+                        <a class="nav-link" href="logout.php">Logout</a>
                     </li>
                 </ul>   
             </nav>

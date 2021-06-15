@@ -27,15 +27,25 @@
             {     
                 $account = $_POST["account"]; 
                 $pin = $_POST["pin"]; 
-                $result1 = $conn->query("SELECT AccountNumber, PIN FROM Users WHERE AccountNumber = '".$account."' AND  PIN = '".$pin."'");
-
+                $result1 = $conn->query("SELECT AccountNumber, PIN, signin FROM Users WHERE AccountNumber = '".$account."' AND  PIN = '".$pin."'");
+                $row = $result1->fetch_assoc();
                 if($result1->num_rows > 0)
                 {
-                    session_start();
-                    $_SESSION["session_id"] = password_hash($account, PASSWORD_BCRYPT); 
-                    $_SESSION["account"] = $account;
-                    echo "<script>alert('Logged In Successfully!')</script>";
-                    header("Location:profile.php");
+                    if($row["signin"] == 0){
+                        $query = $conn->query("UPDATE users SET signin=1 WHERE AccountNumber='".$account."'");
+                        if($query){
+                            session_start();
+                            $_SESSION["session_id"] = password_hash($account, PASSWORD_BCRYPT); 
+                            $_SESSION["account"] = $account;
+                            echo "<script>alert('Logged In Successfully!')</script>";
+                            header("Location:profile.php");
+                        }else{
+                            echo "<script>alert('Database Error')</script>";
+                            header("Location:index.php");
+                        }
+                    }else{
+                        echo "<script>alert('Looks like your arleady logged in')</script>";
+                    }
                 }
                 else
                 {   

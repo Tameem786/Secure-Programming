@@ -42,8 +42,8 @@
                         if (!$conn) {
                           die("Connection failed: " . mysqli_connect_error());
                         }
-                        $sql = "INSERT INTO users (Username, Email, AccountNumber, PIN, amount)
-                        VALUES ('$profilename', '$email', '$accnum', '$pinnum', 500)";
+                        $sql = "INSERT INTO users (Username, Email, AccountNumber, PIN, amount, signin)
+                        VALUES ('$profilename', '$email', '$accnum', '$pinnum', 500, 0)";
                         if ($conn->query($sql) === TRUE) {
                             $conn->close();
                             header("Location:mainpage.php");
