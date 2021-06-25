@@ -1,7 +1,8 @@
 <?php 
     session_start();
-    if(!password_verify($_SESSION["account"], $_SESSION["session_id"])){
-        header("Location:index.php");  
+    if(!isset($_SESSION['loggedin'])){
+        header("Location:index.php");
+        exit;
     }
 ?>
 
@@ -18,45 +19,45 @@
         </form>
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "userdata";
-                // Create connection
-                $conn = mysqli_connect($servername, $username, $password, $dbname);
-                // Check connection
-                if (!$conn) {
-                  die("Connection failed: " . mysqli_connect_error());
-                }else{
-                    $receiver = $_POST["accountnumber"];
-                    $amount = $_POST["amount"];
-                    $sender = $_SESSION["account"];
-                    $result = $conn->query("SELECT amount FROM Users WHERE AccountNumber = '".$receiver."'");
-                    if($result->num_rows > 0){
-                        $newquery = $conn->query("SELECT amount FROM Users WHERE AccountNumber = '".$sender."'");
-                        $rowss = $newquery->fetch_assoc();
-                        $senderamount = $rowss["amount"];
-                        if($senderamount >= $amount){
-                            $sendernewamount = $senderamount - $amount;
-                            $row = $result->fetch_assoc();
-                            $newamount = $row["amount"] + $amount;
-                            $query = $conn->query("UPDATE Users SET amount=$newamount WHERE AccountNumber='".$receiver."'");
-                            if($query){
-                                $query1 = $conn->query("UPDATE Users SET amount=$sendernewamount WHERE AccountNumber='".$sender."'");
-                                if($query1){
-                                    echo "<p>Money send successfully</p>";
-                                    echo "<p>You have $sendernewamount RM left</p>";
-                                }
-                            }else{
-                                echo "<p>Money can not send</p>";
-                            }
-                        }else{
-                            echo "<p>You don't have sufficient amount</p>";
-                        }
+                include("config.php");           
+                $receiver = $_POST["accountnumber"];
+                $amount = $_POST["amount"];
+                $sender =  $_SESSION["account"];
+                $sql = $conn->prepare('SELECT amount FROM Users WHERE AccountNumber=?');
+                $sql->bind_param('s', $receiver);
+                $sql->execute();
+                $sql->store_result();
+                $sql->bind_result($receiveramount);
+                $sql->fetch();
+               
+                if($sql->num_rows > 0){
+                    $sql->bind_param('s', $sender);
+                    $sql->execute();
+                    $sql->store_result();
+                    $sql->bind_result($senderamount);
+                    $sql->fetch();
+                    $sql->close();
+
+                    if($senderamount >= $amount){
+                        $sendernewamount = $senderamount - $amount;
+                        $receivernewamount = $receiveramount+$amount;
+
+                        $sql = $conn->prepare('UPDATE Users SET amount=? WHERE AccountNumber=?');
+                        $sql->bind_param('ds', $receivernewamount , $receiver);
+                        $sql->execute();
+                        
+                        $sql->bind_param('ds', $sendernewamount , $sender);
+                        $sql->execute();
+
+                        echo "<p>Money send successfully</p>";
+                        echo "<p>You have $sendernewamount RM left</p>";         
+                        $sql->close();
                     }else{
-                        echo "<p>Account number is not found.</p>";
+                        echo "<p>You don't have sufficient amount</p>";
                     }
-                }
+                }else{
+                    echo "<p>Account number is not found.</p>";
+                }  
             }
         ?>
     </body>

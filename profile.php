@@ -1,7 +1,7 @@
 <?php 
     session_start();
-    if(!password_verify($_SESSION["account"], $_SESSION["session_id"])){
-        header("Location:index.php");  
+    if(!isset($_SESSION['loggedin'])){
+        header("Location:index.php");
     }
 ?>
 

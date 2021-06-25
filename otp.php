@@ -11,54 +11,56 @@
 </head>
 <body background="Resource/ATM.png" style="background-repeat: no-repeat; background-size: cover;">
     <?php
-        session_start();
-        $accnum = "";
-        $pinnum = "";
-        for($x=0; $x<10; $x++){
-            $accnum .= strval(mt_rand(1,9));
-        }
-        for($y=0; $y<8; $y++){
-            $pinnum .= strval(mt_rand(1,9));
-        }
-        if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $typedotp = $_POST["otp"];
-            if($typedotp != ""){
-                if($typedotp == $_SESSION["OTP"]){
-                    $to_email = $_SESSION["EMAIL"];
-                    $subject = "Simple Email Test via PHP";
-                    $body = "Account Number: {$accnum} \n PIN Number: {$pinnum}";
-                    $headers = "From: atmmachine098@gmail.com";
-                    if (mail($to_email, $subject, $body, $headers)) {
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $dbname = "userdata";
-                        $profilename = $_SESSION["NAME"];
-                        $email = $_SESSION["EMAIL"];
-                        // Create connection
-                        $conn = mysqli_connect($servername, $username, $password, $dbname);
-                        
-                        // Check connection
-                        if (!$conn) {
-                          die("Connection failed: " . mysqli_connect_error());
-                        }
-                        $sql = "INSERT INTO users (Username, Email, AccountNumber, PIN, amount, signin)
-                        VALUES ('$profilename', '$email', '$accnum', '$pinnum', 500, 0)";
-                        if ($conn->query($sql) === TRUE) {
-                            $conn->close();
-                            header("Location:mainpage.php");
-                            exit;
+        try{
+            session_start();
+            $accnum = "";
+            $pinnum = "";
+            $temp_amount = 500;
+            for($x=0; $x<10; $x++){
+                $accnum .= strval(mt_rand(1,9));
+            }
+            for($y=0; $y<8; $y++){
+                $pinnum .= strval(mt_rand(1,9));
+            }
+            if($_SERVER["REQUEST_METHOD"] == "POST"){
+                $typedotp = $_POST["otp"];
+                if($typedotp != ""){
+                    if($typedotp == $_SESSION["OTP"]){
+                        $to_email = $_SESSION["EMAIL"];
+                        $subject = "Simple Email Test via PHP";
+                        $body = "Account Number: {$accnum} \n PIN Number: {$pinnum}";
+                        $headers = "From: atmmachine098@gmail.com";
+                        if (mail($to_email, $subject, $body, $headers)) {            
+                            include("config.php");
+                            $profilename = $_SESSION["NAME"];
+                            $email = $_SESSION["EMAIL"];
+                            if($sql = $conn->prepare('INSERT INTO users (Username, Email, AccountNumber, PIN, amount) VALUES (?, ?, ?, ?, ?)')){
+                                $pin = password_hash($pinnum, PASSWORD_DEFAULT);
+                                $sql->bind_param('ssssd', $profilename, $email, $accnum, $pin, $temp_amount);
+                                $sql->execute();
+                                header("Location:mainpage.php");
+                                exit;
+                            }else {
+                                echo "Error creating database: " . $conn->error;
+                            }
+                            // $sql = "INSERT INTO users (Username, Email, AccountNumber, PIN, amount, signin)
+                            // VALUES ('$profilename', '$email', '$accnum','$pinnum', 500, 0)";
+                            // if ($conn->query($sql) === TRUE) {
+                            //     $conn->close();
+                            //     header("Location:mainpage.php");
+                            //     exit; 
                         } else {
-                            echo "Error creating database: " . $conn->error;
+                            echo "Email sending failed...";
                         }
-                    } else {
-                        echo "Email sending failed...";
+                    }
+                    else{
+                        echo '<script>alert("Enter valid PIN")</script>';
                     }
                 }
-                else{
-                    echo '<script>alert("Enter valid PIN")</script>';
-                }
             }
+        }catch(Exception $e){
+            echo "<script>console.log('$e')<script>";
+            header("Location:index.php");
         }
     ?>
     <div id="content">
