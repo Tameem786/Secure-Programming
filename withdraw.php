@@ -17,7 +17,7 @@
             <input type="submit">
         </form>
         <?php 
-            if($_SERVER["REQUEST_METHOD"] == "POST"){
+            if($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["withdrawamount"])){
                 include("config.php");
                 $amount = $_POST["withdrawamount"];
                 $account = $_SESSION["account"];
@@ -45,6 +45,8 @@
                     }
                     $sql->close();
                 }
+            }else{
+                echo "<p>Empty Input</p>";
             }
         ?>
     </body>

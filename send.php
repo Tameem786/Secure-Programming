@@ -18,7 +18,7 @@
             <input type="submit">
         </form>
         <?php 
-            if($_SERVER["REQUEST_METHOD"] == "POST"){
+            if($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["accountnumber"], $_POST["amount"])){
                 include("config.php");           
                 $receiver = $_POST["accountnumber"];
                 $amount = $_POST["amount"];
@@ -58,6 +58,8 @@
                 }else{
                     echo "<p>Account number is not found.</p>";
                 }  
+            }else{
+                echo "<p>Wrong Input</p>";
             }
         ?>
     </body>

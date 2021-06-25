@@ -12,58 +12,45 @@
 <body background="Resource/ATM.png" style="background-repeat: no-repeat; background-size: cover;">
     <?php
         session_start();
-        if($_SERVER["REQUEST_METHOD"] == "POST"){
-            include("config.php");
-            if(isset($_POST["account"], $_POST["pin"])) 
-            {     
-                $accountname = $_POST["account"]; 
-                // $pin = $_POST["pin"]; 
-                // $result1 = $conn->query("SELECT AccountNumber, PIN, signin FROM Users WHERE AccountNumber='".$account."' AND PIN='".$pin."'");
-                // $row = $result1->fetch_assoc();
-                if($sql = $conn->prepare('SELECT PIN FROM Users WHERE AccountNumber=?')){
-                    $sql->bind_param('s', $accountname);
-                    $sql->execute();
-                    $sql->store_result();
-                    if($sql->num_rows > 0)
-                    {
-                        $sql->bind_result($pin);
-                        $sql->fetch();
-                        if(password_verify($_POST['pin'], $pin)){
-                            session_regenerate_id();
-                            $_SESSION['loggedin'] = TRUE;
-                            $_SESSION['account'] = $_POST['account'];
-                            header("Location:profile.php");
-                            exit;                        
-                        }else{
-                            echo "<script>alert('Incorrect Password!')</script>";
+        try{
+            if($_SERVER["REQUEST_METHOD"] == "POST"){
+                include("config.php");
+                if(isset($_POST["account"], $_POST["pin"])) 
+                {     
+                    $accountname = $_POST["account"]; 
+                    // $pin = $_POST["pin"]; 
+                    // $result1 = $conn->query("SELECT AccountNumber, PIN, signin FROM Users WHERE AccountNumber='".$account."' AND PIN='".$pin."'");
+                    // $row = $result1->fetch_assoc();
+                    if($sql = $conn->prepare('SELECT PIN FROM Users WHERE AccountNumber=?')){
+                        $sql->bind_param('s', $accountname);
+                        $sql->execute();
+                        $sql->store_result();
+                        if($sql->num_rows > 0)
+                        {
+                            $sql->bind_result($pin);
+                            $sql->fetch();
+                            if(password_verify($_POST['pin'], $pin)){
+                                session_regenerate_id();
+                                $_SESSION['loggedin'] = TRUE;
+                                $_SESSION['account'] = $_POST['account'];
+                                header("Location:profile.php");
+                                exit;                        
+                            }else{
+                                echo "<script>alert('Incorrect Password!')</script>";
+                            }
+                        }else{   
+                            echo "<script>alert('User not found!')</script>";
                         }
-                        // if($row["signin"] == 0){
-                            //     $query = $conn->query("UPDATE users SET signin=1 WHERE AccountNumber='".$account."'");
-                            //     if($query){
-                                //         session_start();
-                                //         // $_SESSION["session_id"] = password_hash($account, PASSWORD_BCRYPT); 
-                                //         $_SESSION["account"] = $_POST["account"];
-                                //         $_SESSION["session_id"] = session_id();
-                                //         echo "<script>alert('Logged In Successfully!')</script>";
-                                //         header("Location:profile.php");
-                                //     }else{
-                                    //         echo "<script>alert('Database Error')</script>";
-                                    //         header("Location:index.php");
-                                    //     }
-                                    // }else{
-                                        //     echo "<script>alert('Looks like your arleady logged in')</script>";
-                                        // }
-                    }else{   
-                        echo "<script>alert('User not found!')</script>";
-                        //echo "<script>alert('The username or password are incorrect! You have $count attempts left')</script>";
+                        $sql->close();
+                    }else{
+                        echo "<script>alert('Database Error!')</script>";
                     }
                 }else{
-                    echo "<script>alert('Database Error!')</script>";
+                    header("Location:index.php");
                 }
-            }else{
-                echo "<script>alert('Setting Error!')</script>";
             }
-            $sql->close();
+        }catch(Exception $e){
+            header("Location:index.php");
         }
     ?>
     <div id="content">
