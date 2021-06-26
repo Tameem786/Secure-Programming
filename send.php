@@ -18,7 +18,7 @@
             <input type="submit">
         </form>
         <?php 
-            if($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["accountnumber"], $_POST["amount"])){
+            if($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["accountnumber"], $_POST["amount"]) and $_POST["amount"] > 0){
                 include("config.php");           
                 $receiver = $_POST["accountnumber"];
                 $amount = $_POST["amount"];
